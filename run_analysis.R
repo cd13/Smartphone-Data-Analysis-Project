@@ -81,4 +81,4 @@ meandataset <- setNames(aggregate(. ~ subject+activity, subdataset, function(x) 
 names(meandataset)[1:2] <- c("subject", "activity")
 
 # Writing results of average (mean) calculations in a table.
-write.table(meandataset, file = "smartphonetidydataset.txt", sep = ",", quote = FALSE, qmethod = "double")
+write.table(meandataset, file = "smartphonetidydataset.txt", sep = ",", quote = FALSE, qmethod = "double", row.names=FALSE)
