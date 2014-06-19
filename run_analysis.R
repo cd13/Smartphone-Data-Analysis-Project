@@ -76,6 +76,7 @@ names(subdataset) <- sub(pattern="BodyBody",replacement="Body", x=names(subdatas
 #### STEP 5 ####
 
 # Creating a second dataset "meandataset" to calculate the average (mean) of the measurements by subject and activity.
+# Rename the subject and activity variables to remove the 'Avg' appended in front.
 meandataset <- setNames(aggregate(. ~ subject+activity, subdataset, function(x) mean = mean(x)), c(sapply("Avg", paste0, names(subdataset))))
 names(meandataset)[1:2] <- c("subject", "activity")
 

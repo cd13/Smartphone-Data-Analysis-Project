@@ -24,10 +24,10 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 - `activity_labels.txt`:    Links the numerical labels associated to the activity performed.
 - `subject_train.txt`:    Contains the train subjects referred to numerically as 1 to 30.
 - `train/X_train.txt`:     Training dataset (contains 561 variables and 7352 observations).
-- `train/y_train.txt`:     Numerical labels for the activity performed in the training dataset.
+- `train/y_train.txt`:     Numerical labels (1 to 6) for the activity performed in the training dataset.
 - `subject_test.txt`:    Contains the test subjects referred to numerically as 1 to 30.
 - `test/X_test.txt`:     Test dataset (contains 561 variables and 2947 observations).
-- `test/y_test.txt`:     Numerical labels for the activity performed in the test dataset.
+- `test/y_test.txt`:     Numerical labels (1 to 6) for the activity performed in the test dataset.
 - `test/Inertial Signals/`:     Files not used in this analysis.
 - `train/Inertials Signals/`:     Files not used in this analysis.
 
@@ -36,14 +36,14 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 ### 3.1. Variables in the Reduced Dataset
 
-The data contains a variable `subject` to identify the subjects (numbered 1 to 30) and another variable, `activity`, to specify the activities (see the six activities listed in section 1). Both variables were converted into factor variables in order to perform the calculations of the mean of the processed data variables.
+The data contains a variable `subject` to identify the subjects (numbered 1 to 30) and another variable, `activity`, to specify the activities (see the six activities listed in section 2). Both variables were converted into factor variables in order to perform the calculations of the mean of the processed data variables.
 
 Apart from the `subject` and `activity` variables, there were originally 561 variables derived from the data obtained from the smartphone.
 
 The test and train datasets were combined. From the above 561 variables, only 86 variables were kept based on the presence of the strings `mean` and `std` in their variable names. These variables are described below. They can be found in the
 `fulldataset` dataframe in the `run_analysis.R` code.  Variables for the tidy data set (`meandataset`) are described in section 3.2.
 
-The variable names in the `features.txt` were used since they were considered to be sufficiently descriptive in that they summarize each processing step performed on the data. The variables names with characters such as *-*, *(*, *)* and *,* were removed as they were not necessary to the understanding of the variable and could cause programming difficulties. The capital letter were however kept to accentuate each abbreviated word in the complete variable names. The abbreviated words in each variable name were not written out completely as they would have created variable names that would have been too long.
+The variable names in the `features.txt` were used since they were considered to be sufficiently descriptive in that they summarize each processing step performed on the data. The variables names with characters such as `-`, `(`, `)` and `,` were removed as they were not necessary to the understanding of the variable and could cause programming difficulties. The capital letters were however kept to accentuate each abbreviated word in the complete variable names. The abbreviated words in each variable name were not written in their complete form as they would have created variable names that would have been too long.
 
 Since the data has been transformed by dividing by the range, the variables are all dimensionless (no units). All variables, except the subject and activity factor variables, are numerical variables.
  
@@ -83,9 +83,9 @@ Since the data has been transformed by dividing by the range, the variables are 
    * `fBodyAccMeanY`: Frequency-domain body acceleration in the Y direction
    * `fBodyAccMeanZ`: Frequency-domain body acceleration in the Z direction
    
-   * `fBodyAccJerkMeanX`: Frequency-domain Jerk signal of the body accelerationin the X direction
-   * `fBodyAccJerkMeanY`: Frequency-domain Jerk signal of the body accelerationin the Y direction
-   * `fBodyAccJerkMeanZ`: Frequency-domain Jerk signal of the body accelerationin the Z direction
+   * `fBodyAccJerkMeanX`: Frequency-domain Jerk signal of the body acceleration in the X direction
+   * `fBodyAccJerkMeanY`: Frequency-domain Jerk signal of the body acceleration in the Y direction
+   * `fBodyAccJerkMeanZ`: Frequency-domain Jerk signal of the body acceleration in the Z direction
    
    * `fBodyGyroMeanX`: Frequency-domain body angular velocity in the X direction
    * `fBodyGyroMeanY`: Frequency-domain body angular velocity in the Y direction
@@ -345,8 +345,8 @@ names(subdataset) <- gsub(pattern="\\)",replacement="", x=names(subdataset))
 names(subdataset) <- sub(pattern=BodyBody),replacement="Body", x=names(subdataset))
 ```
 
-- In step 5, the average of the processed data variables is calculated for each subject and each activity and stored  into the data frame `meandataset`. Since the column names for the variables `subject` and `activity` were erased during the aggregation, both were added afterwards to the tidy dataset `meandataset`.
-The data is outputed into a tidy data table format as the text file, `smartphonetidydataset.txt`. See README.txt for details on how to read this file. 
+- In step 5, the average of the processed data variables is calculated for each subject and each activity and stored into the data frame `meandataset`. The variables `subject` and `activity` are renamed to remove the `Avg` added in front of the names when using `sapply`.
+The data is outputed into a tidy data table format as the text file, `smartphonetidydataset.txt`. See README.md for details on how to read this file. 
 ```{r}
 meandataset <- setNames(aggregate(. ~ subject+activity, subdataset, function(x) mean = mean(x)), c(sapply("Avg", paste0, names(subdataset))))
 names(meandataset)[1:2] <- c("subject", "activity")
